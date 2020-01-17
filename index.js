@@ -25,7 +25,7 @@ app.post('/webhook', (req,res)=>{
     const webhook_event = req.body.entry[0]
     if(webhook_event.messaging){
         webhook_event.messaging.forEach(event =>{
-            handleMessage(event)
+            handleEvent(event.sender.id, event)
             console.log(event)
         })
     }
@@ -33,17 +33,28 @@ app.post('/webhook', (req,res)=>{
     res.sendStatus(200)
 })
 
+function handleEvent(senderId, event){
+    if(event.message){
+        defaultMessage(senderId)
+    }
+}
+
 function handleMessage(event){
-    const senderId = event.sender.senderId
-    const messageText = event.message.text
+    if(event.text){
+        defaultMessage(senderId)
+    }
+}
+
+function defaultMessage(senderId){
     const messageData = {
-        recipient: {
-            id: senderId
+        "recipient": {
+            "id": senderId
         },
-        message: {
-            text: messageText
+        "message": {
+            "text": "Esta es una respuesta automatica"
         }
     }
+
     callSendApi(messageData)
 }
 
