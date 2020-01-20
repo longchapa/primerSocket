@@ -33,6 +33,7 @@ app.post('/webhook/', (req,res)=>{
     } */
 
     let body = req.body;
+    console.log('Entro antes de page')
 
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
@@ -43,7 +44,8 @@ app.post('/webhook/', (req,res)=>{
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
-            handleEvent(entry.sender.id, entry)
+            /* handleEvent(entry.sender.id, entry) */
+            console.log('Entro aca')
         });
 
         // Returns a '200 OK' response to all requests
