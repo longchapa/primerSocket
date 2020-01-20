@@ -136,7 +136,26 @@ app.listen(PORT, function(){
     console.log(`Nuestro servidor esta funcionando con el barto en el puerto:${PORT}`);
 });
 
+const messages = [{
+    author: "Carlos",
+    text: "Hola, que tal?",
+    id: 1
+},{
+    author: "Pepe",
+    text: "Muy bien! y tu?"
+},{
+    author: "Paco",
+    text: "Genial!"
+}]
+
 
 io.on('connection', function(socket){
-    console.log(`Funciona esta monda!!!!`)
+    console.log(`Cliente conectado`)
+    socket.emit('messages', messages)
+
+    socket.on('new-message', (data)=>{
+        messages.push(data)
+
+        io.sockets.emit('messages', messages)
+    })
 })
