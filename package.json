@@ -15,5 +15,7 @@
     "express": "^4.17.1",
     "express-device": "^0.4.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
 }

@@ -1,6 +1,8 @@
 const express = require('express')
 const expressdevice = require('express-device')
-const app = express()
+const bodyParser = require('body-parser')
+const app = express().use(bodyParser.json())
+
 const access_token = "EAAjISRRWe2UBAOBUhG7cZC6QSWcGVfWyAQppFDikURJLxSxVNzPEWsRqLbhU6k98gFpYXdPYu7IFnl3LOLRJkdwMVMvCZB8E6ZC6EQeQUhjfMG45geuf30fY2EEesZBAfeFn0KZBzIuUQxSGdFFbFdvnXWFHOC9lr9RlTorkbhz9eI6MTeNkShAh9TzmdKj4ZD"
 
 app.get('/', (req,res)=>{
@@ -21,16 +23,35 @@ app.get('/webhook', (req,res)=>{
     }
 })
 
-app.post('/webhook', (req,res)=>{
-    const webhook_event = req.body.entry[0]
-    console.log(webhook_event)
-    if(webhook_event.messaging){
+app.post('/webhook/', (req,res)=>{
+    /* const webhook_event = req.body */
+    /* console.log(req.body.object) */
+    /* if(webhook_event.messaging){
         webhook_event.messaging.forEach(event =>{
             handleEvent(event.sender.id, event)
         })
-    }
+    } */
 
-    res.sendStatus(200)
+    let body = req.body;
+
+    // Checks this is an event from a page subscription
+    if (body.object === 'page') {
+
+        // Iterates over each entry - there may be multiple if batched
+        body.entry.forEach(function(entry) {
+
+        // Gets the message. entry.messaging is an array, but 
+        // will only ever contain one message, so we get index 0
+        let webhook_event = entry.messaging[0];
+            handleEvent(entry.sender.id, entry)
+        });
+
+        // Returns a '200 OK' response to all requests
+        res.status(200).send('EVENT_RECEIVED');
+    } else {
+        // Returns a '404 Not Found' if event is not from a page subscription
+        res.sendStatus(404);
+    }    
 })
 
 function handleEvent(senderId, event){
