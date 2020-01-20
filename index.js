@@ -1,100 +1,136 @@
-const express = require('express')
-const expressdevice = require('express-device')
-const bodyParser = require('body-parser')
-const app = express().use(bodyParser.json())
+'use strict';
 
-const access_token = "EAAjISRRWe2UBAOBUhG7cZC6QSWcGVfWyAQppFDikURJLxSxVNzPEWsRqLbhU6k98gFpYXdPYu7IFnl3LOLRJkdwMVMvCZB8E6ZC6EQeQUhjfMG45geuf30fY2EEesZBAfeFn0KZBzIuUQxSGdFFbFdvnXWFHOC9lr9RlTorkbhz9eI6MTeNkShAh9TzmdKj4ZD"
+const express = require('express');
+const bodyParser = require('body-parser');
+const request = require('request');
+const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5MJFVYr5TUjBF1Q0R1mOm9AqgyVbXNZAlV5LmAum1ZBAAz0UlcHFKZBsBKPSWZBMpN9BomM7LBeQ272byo5WuUIZAqZChXTietQfQ5RffgKTPG2FcXjkjNzvl9647R6MUwHIJEvBNoZD"
 
-app.get('/', (req,res)=>{
-    res.send('Le pasamos por parametro al handle')
-})
-app.listen(process.env.PORT || 3000, ()=>console.log('Activo en el puerto 3000'))
+const app = express();
 
+app.set('port', 5000);
+app.use(bodyParser.json());
 
-app.get('/webhook', (req,res)=>{
-    const token = req.query['hub.verify_token']
-    const challenge = req.query['hub.challenge']
-    let VERIFY_TOKEN = "claveDeAcceso"
-
-    if(token === VERIFY_TOKEN){
-        res.send(challenge)
-    }else{
-        res.send('No se tienen los permisos')
-    }
+app.get('/', function(req, response){
+    response.send('Hola Mundo!');
 })
 
-app.post('/webhook/', (req,res)=>{
-    /* const webhook_event = req.body */
-    /* console.log(req.body.object) */
-    /* if(webhook_event.messaging){
-        webhook_event.messaging.forEach(event =>{
-            handleEvent(event.sender.id, event)
-        })
-    } */
-
-    let body = req.body;
-    console.log('Entro antes de page')
-
-    // Checks this is an event from a page subscription
-    if (body.object === 'page') {
-
-        // Iterates over each entry - there may be multiple if batched
-        body.entry.forEach(function(entry) {
-
-        // Gets the message. entry.messaging is an array, but 
-        // will only ever contain one message, so we get index 0
-        let webhook_event = entry.messaging[0];
-            handleEvent(entry.sender.id, entry)
-        });
-
-        // Returns a '200 OK' response to all requests
-        res.status(200).send('EVENT_RECEIVED');
+app.get('/webhook', function(req, response){
+    if(req.query['hub.verify_token'] === 'pugpizza_token'){
+        response.send(req.query['hub.challenge']);
     } else {
-        // Returns a '404 Not Found' if event is not from a page subscription
-        res.sendStatus(404);
-    }    
-})
+        response.send('Pug Pizza no tienes permisos.');
+    }
+});
+
+app.post('/webhook/', function(req, res){
+    const webhook_event = req.body.entry[0];
+    if(webhook_event.messaging) {
+        webhook_event.messaging.forEach(event => {
+            handleEvent(event.sender.id, event);
+        });
+    }
+    res.sendStatus(200);
+});
 
 function handleEvent(senderId, event){
     if(event.message){
         handleMessage(senderId, event.message)
+    } else if(event.postback) {
+        handlePostback(senderId, event.postback.payload)
     }
 }
 
-function handleMessage(event){
+function handleMessage(senderId, event){
     if(event.text){
-        defaultMessage(senderId)
+        defaultMessage(senderId);
+    } else if (event.attachments) {
+        handleAttachments(senderId, event)
     }
 }
 
-function defaultMessage(senderId){
+function defaultMessage(senderId) {
     const messageData = {
         "recipient": {
             "id": senderId
         },
         "message": {
-            "text": "Esta es una respuesta automatica"
+            "text": "Hola soy un bot de messenger y te invito a utilizar nuestro menu",
+            "quick_replies": [
+                {
+                    "content_type": "text",
+                    "title": "¿Quieres una Pizza?",
+                    "payload": "PIZZAS_PAYLOAD"
+                },
+                {
+                    "content_type": "text",
+                    "title": "Acerca de",
+                    "payload": "ABOUT_PAYLOAD"
+                }
+            ]
         }
     }
-    callSendApi(messageData)
+    senderActions(senderId)
+    callSendApi(messageData);
 }
 
-function callSendApi(response){
+function handlePostback(senderId, payload){
+    switch (payload) {
+        case "GET_STARTED_PUGPIZZA":
+            console.log(payload)
+        break;
+    }
+}
+
+function senderActions(senderId) {
+    const messageData = {
+        "recipient": {
+            "id": senderId
+        },
+        "sender_action": "typing_on"
+    }
+    callSendApi(messageData);
+}
+
+function handleAttachments(senderId, event){
+    let attachment_type = event.attachments[0].type;
+    switch (attachment_type) {
+        case "image":
+            console.log(attachment_type);
+        break;
+        case "video": 
+            console.log(attachment_type);
+        break;
+        case "audio":
+            console.log(attachment_type);
+        break;
+      case "file":
+            console.log(attachment_type);
+        break;
+      default:
+            console.log(attachment_type);
+        break;
+    }
+}
+
+function callSendApi(response) {
     request({
-        "uri":"https://graph.facebook.com/me/messages",
+        "uri": "https://graph.facebook.com/me/messages",
         "qs": {
             "access_token": access_token
         },
         "method": "POST",
         "json": response
     },
-    function(err){
-        if(err){
-            console.log(`Ocurrio un error`)
-        }else{
-            console.log(`Mensaje enviado`)
+        function (err) {
+            if (err) {
+                console.log('Ha ocurrido un error')
+            } else {
+                console.log('Mensaje enviado')
+            }
         }
-    }
     )
 }
 
+app.listen(app.get('port'), function(){
+    console.log('Nuestro servidor esta funcionando con el barto en el puerto: ', app.get('port'));
+});
