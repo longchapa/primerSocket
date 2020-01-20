@@ -7,7 +7,7 @@ const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5M
 
 const app = express();
 
-app.set('port', 5000);
+const PORT = process.env.PORT || 5000
 app.use(bodyParser.json());
 
 app.get('/', function(req, response){
@@ -131,6 +131,6 @@ function callSendApi(response) {
     )
 }
 
-app.listen(app.get('port'), function(){
-    console.log('Nuestro servidor esta funcionando con el barto en el puerto: ', app.get('port'));
+app.listen(PORT, function(){
+    console.log(`Nuestro servidor esta funcionando con el barto en el puerto:${PORT}`);
 });
