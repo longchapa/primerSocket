@@ -6,7 +6,7 @@ const app = express().use(bodyParser.json())
 const access_token = "EAAjISRRWe2UBAOBUhG7cZC6QSWcGVfWyAQppFDikURJLxSxVNzPEWsRqLbhU6k98gFpYXdPYu7IFnl3LOLRJkdwMVMvCZB8E6ZC6EQeQUhjfMG45geuf30fY2EEesZBAfeFn0KZBzIuUQxSGdFFbFdvnXWFHOC9lr9RlTorkbhz9eI6MTeNkShAh9TzmdKj4ZD"
 
 app.get('/', (req,res)=>{
-    res.send('Aca los cambios en el rrot')
+    res.send('Le pasamos por parametro al handle')
 })
 app.listen(process.env.PORT || 3000, ()=>console.log('Activo en el puerto 3000'))
 
@@ -44,8 +44,7 @@ app.post('/webhook/', (req,res)=>{
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
-            /* handleEvent(entry.sender.id, entry) */
-            console.log('Entro aca')
+            handleEvent(entry.sender.id, entry)
         });
 
         // Returns a '200 OK' response to all requests
