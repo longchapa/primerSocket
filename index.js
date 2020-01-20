@@ -1,12 +1,14 @@
 'use strict';
 
 const express = require('express');
+const app = express();
+const server = require('http').Server(app)
 const bodyParser = require('body-parser');
 const request = require('request');
-const io = require('socket.io')
+const io = require('socket.io')(server)
 const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5MJFVYr5TUjBF1Q0R1mOm9AqgyVbXNZAlV5LmAum1ZBAAz0UlcHFKZBsBKPSWZBMpN9BomM7LBeQ272byo5WuUIZAqZChXTietQfQ5RffgKTPG2FcXjkjNzvl9647R6MUwHIJEvBNoZD"
 
-const app = express();
+
 
 const PORT = process.env.PORT || 5000
 app.use(bodyParser.json());
@@ -135,6 +137,6 @@ app.listen(PORT, function(){
 });
 
 
-io.on('connection', (socket)=>{
-    console.log(`Funciono esta monda!!`)
+io.on('connection', function(socket){
+    console.log(`Funciona esta monda!!!!`)
 })
