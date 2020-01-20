@@ -1,4 +1,4 @@
-const socket = io.connect('http://localhost:5000', { 'forceNew': true })
+const socket = io.connect('https://webhookdashboard.herokuapp.com/', { 'forceNew': true })
 
 socket.on('messages', (data)=>{
     console.log(data)
