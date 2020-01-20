@@ -157,5 +157,6 @@ io.on('connection', function(socket){
         messages.push(data)
 
         io.sockets.emit('messages', messages)
+        console.log(`Se metio!!!`)
     })
 })
