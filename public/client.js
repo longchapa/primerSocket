@@ -19,6 +19,7 @@ function render(data){
 }
 
 function addMessage(e){
+    console.log(`ADDMESSAGE`)
     const message = {
         author: document.getElementById('username').value,
         text: document.getElementById('texto').value
