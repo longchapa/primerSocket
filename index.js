@@ -154,9 +154,9 @@ io.on('connection', function(socket){
     socket.emit('messages', messages)
 
     socket.on('new-message', (data)=>{
+        console.log(`Se metio!!!`)
         messages.push(data)
 
         io.sockets.emit('messages', messages)
-        console.log(`Se metio!!!`)
     })
 })
