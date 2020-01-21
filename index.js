@@ -13,13 +13,9 @@ const cors = require('cors')
 const PORT = process.env.PORT || 5000
 
 app.use(bodyParser.json());
+app.use(cors())
 
-const corsOptions = {
-    origin: 'http://localhost:5000',
-    optionsSuccessStatus: 200
-}
-
-app.get('/', cors(corsOptions), (req,res)=>{
+app.get('/', (req,res)=>{
     res.status(200).send(`Hola mundo!!`)
 })
 
