@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000
 app.use(bodyParser.json());
 
 const corsOptions = {
-    origin: 'file:///home/davidchaparro/Documents/Codigo/noSubir/socketLocalHeroku/index.html',
+    origin: 'http://localhost:5000',
     optionsSuccessStatus: 200
 }
 
