@@ -11,47 +11,40 @@ const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5M
 
 const PORT = process.env.PORT || 5000
 
-function allowCors(req, res, next) {
-    req.headers['Access-Control-Allow-Origin'] = '*'
-    req.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-    req.headers['Access-Control-Allow-Headers'] = 'X-Requested-With,content-type'
-    req.headers['Access-Control-Allow-Credentials'] = true
-    console.log('jjjjjj')
-    next();
-}
-app.use(allowCors);
-
-
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.status(200).send(`Hola mundo!!`)
 })
 
-const messages = [{
-    author: "Carlos",
-    text: "Hola, que tal?",
-    id: 1
-}, {
-    author: "Pepe",
-    text: "Muy bien! y tu?"
-}, {
-    author: "Paco",
-    text: "Genial!"
-}]
-
-
-io.on('connection', function (socket) {
-    console.log(`Cliente conectado`)
-    socket.emit('messages', messages)
-
-    socket.on('new-message', (data) => {
-        console.log(`Se metio!!!`)
-        messages.push(data)
-
-        io.sockets.emit('messages', messages)
+try{
+    const messages = [{
+        author: "Carlos",
+        text: "Hola, que tal?",
+        id: 1
+    }, {
+        author: "Pepe",
+        text: "Muy bien! y tu?"
+    }, {
+        author: "Paco",
+        text: "Genial!"
+    }]
+    
+    
+    io.on('connection', function (socket) {
+        console.log(`Cliente conectado`)
+        socket.emit('messages', messages)
+    
+        socket.on('new-message', (data) => {
+            console.log(`Se metio!!!`)
+            messages.push(data)
+    
+            io.sockets.emit('messages', messages)
+        })
     })
-})
+}catch(err){
+    console.log(err)
+}
 
 // app.get('/webhook', function(req, res){
 //     if(req.query['hub.verify_token'] === 'pugpizza_token'){
