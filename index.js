@@ -11,9 +11,26 @@ const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5M
 
 const PORT = process.env.PORT || 5000
 
+
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    // Pass to next layer of middleware
+    next();
+});
+
+
+
 app.use(bodyParser.json());
 
-app.get('/', (req,res)=>{
+app.get('/', (req, res) => {
     res.status(200).send(`Hola mundo!!`)
 })
 
@@ -21,20 +38,20 @@ const messages = [{
     author: "Carlos",
     text: "Hola, que tal?",
     id: 1
-},{
+}, {
     author: "Pepe",
     text: "Muy bien! y tu?"
-},{
+}, {
     author: "Paco",
     text: "Genial!"
 }]
 
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
     console.log(`Cliente conectado`)
     socket.emit('messages', messages)
 
-    socket.on('new-message', (data)=>{
+    socket.on('new-message', (data) => {
         console.log(`Se metio!!!`)
         messages.push(data)
 
@@ -159,6 +176,6 @@ io.on('connection', function(socket){
 //     )
 // }
 
-app.listen(PORT, function(){
+app.listen(PORT, function () {
     console.log(`Listen on:${PORT}`);
 });
