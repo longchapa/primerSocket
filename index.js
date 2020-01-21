@@ -14,12 +14,12 @@ const PORT = process.env.PORT || 5000
 
 app.use(bodyParser.json());
 
-const corsOptions = {
-    origin: '190.14.248.146',
-    optionsSuccessStatus: 200
-}
+app.use(cors({
+    origin: '190.14.248.146'
+}))
 
-app.get('/', cors(corsOptions), (req,res)=>{
+
+app.get('/', (req,res)=>{
     res.status(200).send(`Hola mundo!!`)
 })
 
