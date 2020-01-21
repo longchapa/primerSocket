@@ -13,9 +13,13 @@ const cors = require('cors')
 const PORT = process.env.PORT || 5000
 
 app.use(bodyParser.json());
-app.use(cors())
 
-app.get('/', (req,res)=>{
+const corsOptions = {
+    origin: 'file:///home/davidchaparro/Documents/Codigo/noSubir/socketLocalHeroku/index.html',
+    optionsSuccessStatus: 200
+}
+
+app.get('/', cors(corsOptions), (req,res)=>{
     res.status(200).send(`Hola mundo!!`)
 })
 
