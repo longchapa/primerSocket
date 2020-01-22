@@ -17,6 +17,14 @@ app.get('/', (req,res)=>{
     res.status(200).send(`Hola mundo`)
 })
 
+app.get('/webhook', (req,res)=>{
+    if(req.query['hub.verify_token'] === 'accesoAEsteWebhook'){
+        res.send(req.query['hub.challenge'])
+    }else{
+        res.send(`No tiene permisos, pero funciona`)
+    }
+})
+
 server.listen(PORT, ()=>{
     console.log(`Listen on http://localhost:${PORT}`)
 })
@@ -36,29 +44,7 @@ server.listen(PORT, ()=>{
 
 
 
-// const messages = [{
-//     author: "Carlos",
-//     text: "Hola, que tal?",
-//     id: 1
-// }, {
-//     author: "Pepe",
-//     text: "Muy bien! y tu?"
-// }, {
-//     author: "Paco",
-//     text: "Genial!"
-// }]
 
-// io.on('connection', function (socket) {
-//     console.log(`Cliente conectado`)
-//     socket.emit('messages', messages)
-
-//     socket.on('new-message', (data) => {
-//         console.log(`Se metio!!!`)
-//         messages.push(data)
-
-//         io.sockets.emit('messages', messages)
-//     })
-// })
 
 // app.get('/webhook', function(req, res){
 //     if(req.query['hub.verify_token'] === 'pugpizza_token'){
