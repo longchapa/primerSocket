@@ -1,46 +1,62 @@
-'use strict';
-
-
-const express = require('express');
-const app = express();
-const server = require('http').Server(app)
-const bodyParser = require('body-parser');
-const request = require('request');
+const app = require('express')()
+const server = require('http').createServer(app)
 const io = require('socket.io')(server)
-const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5MJFVYr5TUjBF1Q0R1mOm9AqgyVbXNZAlV5LmAum1ZBAAz0UlcHFKZBsBKPSWZBMpN9BomM7LBeQ272byo5WuUIZAqZChXTietQfQ5RffgKTPG2FcXjkjNzvl9647R6MUwHIJEvBNoZD"
-
 const PORT = process.env.PORT || 3000
 
-
-app.use(bodyParser.json());
-
-app.get('/', (req, res) => {
-    res.status(200).send(`Hola mundo!!`)
+io.on('connection', (socket)=>{
+    console.log(`Cliente conectado${socket.id}`)
 })
 
-const messages = [{
-    author: "Carlos",
-    text: "Hola, que tal?",
-    id: 1
-}, {
-    author: "Pepe",
-    text: "Muy bien! y tu?"
-}, {
-    author: "Paco",
-    text: "Genial!"
-}]
-
-io.on('connection', function (socket) {
-    console.log(`Cliente conectado`)
-    socket.emit('messages', messages)
-
-    socket.on('new-message', (data) => {
-        console.log(`Se metio!!!`)
-        messages.push(data)
-
-        io.sockets.emit('messages', messages)
-    })
+app.get('/', (req,res)=>{
+    res.status(200).send(`Hola mundo`)
 })
+
+server.listen(PORT, ()=>{
+    console.log(`Listen on http://localhost:${PORT}`)
+})
+
+
+//****************************************************************Otro codigo diferente */
+// const express = require('express');
+// const app = express();
+// const server = require('http').createServer()
+// const bodyParser = require('body-parser');
+// const request = require('request');
+// const io = require('socket.io')(server)
+// const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5MJFVYr5TUjBF1Q0R1mOm9AqgyVbXNZAlV5LmAum1ZBAAz0UlcHFKZBsBKPSWZBMpN9BomM7LBeQ272byo5WuUIZAqZChXTietQfQ5RffgKTPG2FcXjkjNzvl9647R6MUwHIJEvBNoZD"
+
+// const PORT = process.env.PORT || 3000
+
+
+// app.use(bodyParser.json());
+
+// app.get('/', (req, res) => {
+//     res.status(200).send(`Hola mundo!!`)
+// })
+
+// const messages = [{
+//     author: "Carlos",
+//     text: "Hola, que tal?",
+//     id: 1
+// }, {
+//     author: "Pepe",
+//     text: "Muy bien! y tu?"
+// }, {
+//     author: "Paco",
+//     text: "Genial!"
+// }]
+
+// io.on('connection', function (socket) {
+//     console.log(`Cliente conectado`)
+//     socket.emit('messages', messages)
+
+//     socket.on('new-message', (data) => {
+//         console.log(`Se metio!!!`)
+//         messages.push(data)
+
+//         io.sockets.emit('messages', messages)
+//     })
+// })
 
 // app.get('/webhook', function(req, res){
 //     if(req.query['hub.verify_token'] === 'pugpizza_token'){
@@ -159,6 +175,6 @@ io.on('connection', function (socket) {
 //     )
 // }
 
-app.listen(PORT, function () {
-    console.log(`Listen on:${PORT}`);
-});
+// app.listen(PORT, function () {
+//     console.log(`Listen on:${PORT}`);
+// });
