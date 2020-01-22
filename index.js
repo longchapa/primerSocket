@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 3000
 
 io.on('connection', (socket)=>{
     console.log(`Cliente conectado${socket.id}`)
+
+    socket.emit('new-message', 'Esta conectado')
 })
 
 app.use(bodyParser.json())
@@ -27,14 +29,12 @@ server.listen(PORT, ()=>{
 
 // const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5MJFVYr5TUjBF1Q0R1mOm9AqgyVbXNZAlV5LmAum1ZBAAz0UlcHFKZBsBKPSWZBMpN9BomM7LBeQ272byo5WuUIZAqZChXTietQfQ5RffgKTPG2FcXjkjNzvl9647R6MUwHIJEvBNoZD"
 
-// const PORT = process.env.PORT || 3000
 
 
-// app.use(bodyParser.json());
 
-// app.get('/', (req, res) => {
-//     res.status(200).send(`Hola mundo!!`)
-// })
+
+
+
 
 // const messages = [{
 //     author: "Carlos",
