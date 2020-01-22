@@ -30,6 +30,7 @@ app.post('/webhook', (req, res)=>{
     if(webhook_event.messaging){
         webhook_event.messaging.forEach(event=>{
             handleEvent(event.sender.id, event)
+            console.log(event)
         })
         res.sendStatus(200)
     }else{
