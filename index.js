@@ -9,6 +9,8 @@ io.on('connection', (socket)=>{
     console.log(`Cliente conectado${socket.id}`)
 })
 
+app.use(bodyParser.json())
+
 app.get('/', (req,res)=>{
     res.status(200).send(`Hola mundo`)
 })
