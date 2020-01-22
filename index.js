@@ -25,6 +25,58 @@ app.get('/webhook', (req,res)=>{
     }
 })
 
+app.post('/webhook', (req, res)=>{
+    const webhook_event = req.body.entry[0]
+    if(webhook_event.messaging){
+        webhook_event.messaging.forEach(event=>{
+            handleEvent(event.sender.id, event)
+        })
+        res.sendStatus(200)
+    }else{
+        res.sendStatus(400)
+    }
+})
+
+function handleEvent(senderId, event){
+    if(event.message){
+        defaultMessage(senderId)
+    }
+}
+
+function defaultMessage(senderId){
+    const messageData = {
+        "recipient":{
+            "id": senderId
+        },
+        "message":{
+            "text": "Esta es una prueba muy importante"
+        }
+    }
+    callSendApi(messageData)
+}
+
+function callSendApi(response){
+
+    const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5MJFVYr5TUjBF1Q0R1mOm9AqgyVbXNZAlV5LmAum1ZBAAz0UlcHFKZBsBKPSWZBMpN9BomM7LBeQ272byo5WuUIZAqZChXTietQfQ5RffgKTPG2FcXjkjNzvl9647R6MUwHIJEvBNoZD"
+
+    request({
+        "uri": "https://graph.facebook.com/me/messages",
+        "qs": {
+            "access_token": access_token
+        },
+        "method": "POST",
+        "json": response
+    },
+        function (err) {
+            if (err) {
+                console.log('Ha ocurrido un error')
+            } else {
+                console.log('Mensaje enviado')
+            }
+        }
+    )
+}
+
 server.listen(PORT, ()=>{
     console.log(`Listen on http://localhost:${PORT}`)
 })
@@ -37,22 +89,6 @@ server.listen(PORT, ()=>{
 
 // const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5MJFVYr5TUjBF1Q0R1mOm9AqgyVbXNZAlV5LmAum1ZBAAz0UlcHFKZBsBKPSWZBMpN9BomM7LBeQ272byo5WuUIZAqZChXTietQfQ5RffgKTPG2FcXjkjNzvl9647R6MUwHIJEvBNoZD"
 
-
-
-
-
-
-
-
-
-
-// app.get('/webhook', function(req, res){
-//     if(req.query['hub.verify_token'] === 'pugpizza_token'){
-//         res.send(req.query['hub.challenge']);
-//     } else {
-//         res.send('PlatziPrueba no tienes permisos.');
-//     }
-// });
 
 // app.post('/webhook/', function(req, res){
 //     const webhook_event = req.body.entry[0];
