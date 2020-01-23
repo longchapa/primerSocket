@@ -8,8 +8,6 @@ const PORT = process.env.PORT || 3000
 
 io.on('connection', (socket)=>{
     console.log(`Cliente conectado${socket.id}`)
-
-    socket.emit('new-message', 'Esta conectado')
 })
 
 app.use(bodyParser.json())
