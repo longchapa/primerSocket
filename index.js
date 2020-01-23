@@ -2,6 +2,7 @@ const app = require('express')()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const bodyParser = require('body-parser')
+const socket = require('./socket')
 const request = require('request')
 const PORT = process.env.PORT || 3000
 
@@ -54,6 +55,7 @@ function defaultMessage(senderId){
         }
     }
     callSendApi(messageData)
+    socket.emit('facebook', messageData)
 }
 
 function callSendApi(response){
@@ -81,8 +83,5 @@ function callSendApi(response){
 server.listen(PORT, ()=>{
     console.log(`Listen on http://localhost:${PORT}`)
 })
-
-
-//****************************************************************Otro codigo diferente */
 
 
