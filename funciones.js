@@ -3,7 +3,7 @@ function eventoFacebook(event){
         const senderId = a.sender.id
         const mensaje = a.message.text
         const data = {
-            "senderID": senderId,
+            "senderId": senderId,
             "mensaje" : mensaje
         }
         return data
