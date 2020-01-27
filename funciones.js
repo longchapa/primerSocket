@@ -1,5 +1,5 @@
 function eventoFacebook(event){
-    event.messaging.forEach(a => {
+    event.forEach(a => {
         const senderId = a.sender.id
         const mensaje = a.message.text
         const data = {
