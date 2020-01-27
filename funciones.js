@@ -10,4 +10,4 @@ function messageData(senderId){
     return data
 }
 
-module.exports = funciones
+module.exports.messageData = messageData
