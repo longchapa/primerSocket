@@ -27,16 +27,16 @@ app.get('/webhook', (req,res)=>{
 app.post('/webhook', (req, res)=>{
     const webhook_event = req.body.entry[0]
     if(webhook_event.messaging){
-        // console.log(`Detecta mensaje`)
-        // const data = funcion.eventoFacebook(webhook_event.messaging)
-        // handleEvent(data.senderID, data)
-        // console.log(data.mensaje)
-        // io.emit('mensaje', data.mensaje)
-        webhook_event.messaging.forEach(event=>{
-            handleEvent(event.sender.id, event)
-            console.log(event.message.text)
-            io.emit('mensaje', event.message.text)
-        })
+        console.log(`Detecta mensaje`)
+        const data = funcion.eventoFacebook(webhook_event.messaging)
+        handleEvent(data.senderID, data)
+        console.log(data.mensaje)
+        io.emit('mensaje', data.mensaje)
+        // webhook_event.messaging.forEach(event=>{
+        //     handleEvent(event.sender.id, event)
+        //     console.log(event.message.text)
+        //     io.emit('mensaje', event.message.text)
+        // })
         res.sendStatus(200)
     }else{
         res.sendStatus(400)
