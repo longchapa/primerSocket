@@ -4,6 +4,7 @@ const io = require('socket.io')(server)
 const bodyParser = require('body-parser')
 const request = require('request')
 const PORT = process.env.PORT || 3000
+const funcion = require('./funciones')
 
 io.on('connection', (socket)=>{
     console.log(`Cliente conectado${socket.id}`)
@@ -44,14 +45,7 @@ function handleEvent(senderId, event){
 }
 
 function defaultMessage(senderId){
-    const messageData = {
-        "recipient":{
-            "id": senderId
-        },
-        "message":{
-            "text": "Esta es una prueba muy importante"
-        }
-    }
+    const messageData = funcion.messageData(senderId)
     callSendApi(messageData)
 }
 
