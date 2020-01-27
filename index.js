@@ -52,7 +52,6 @@ function defaultMessage(senderId){
         }
     }
     callSendApi(messageData)
-    socket.emit('facebook', messageData)
 }
 
 function callSendApi(response){
