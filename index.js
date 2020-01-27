@@ -2,7 +2,6 @@ const app = require('express')()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const bodyParser = require('body-parser')
-const socket = require('./socket')
 const request = require('request')
 const PORT = process.env.PORT || 3000
 
