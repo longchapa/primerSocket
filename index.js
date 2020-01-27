@@ -28,7 +28,7 @@ app.post('/webhook', (req, res)=>{
     if(webhook_event.messaging){
         webhook_event.messaging.forEach(event=>{
             handleEvent(event.sender.id, event)
-            console.log(event.sender)
+            console.log(event.text)
         })
         res.sendStatus(200)
     }else{
