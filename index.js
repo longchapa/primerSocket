@@ -27,6 +27,7 @@ app.get('/webhook', (req,res)=>{
 app.post('/webhook', (req, res)=>{
     const webhook_event = req.body.entry[0]
     if(webhook_event.messaging){
+        console.log(`Detecta mensaje`)
         const data = funcion.eventoFacebook(webhook_event.messaging)
         handleEvent(data.senderID, data)
         console.log(data.mensaje)
