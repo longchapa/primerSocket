@@ -56,7 +56,7 @@ function defaultMessage(senderId){
 
 function callSendApi(response){
 
-    const access_token = "EAAjISRRWe2UBAEegIbFw8iiU22hiFu7HtAMn32sOTy89pWzxLYJbMyQ5MJFVYr5TUjBF1Q0R1mOm9AqgyVbXNZAlV5LmAum1ZBAAz0UlcHFKZBsBKPSWZBMpN9BomM7LBeQ272byo5WuUIZAqZChXTietQfQ5RffgKTPG2FcXjkjNzvl9647R6MUwHIJEvBNoZD"
+    const access_token = "EAAjISRRWe2UBABbFjZAzU3HYt1VzXYXaHf0SgD6GZCyX2jNUf06RFlx4U8dwWLzJUnrXytzZAstLU5sHp1Y5st0AbEqmINWNTH5waFyFEc5SHdvA7iaPAzo6HonvFLTOpRCtv1eQOF8OhVslnccKjbQwKVZAuImJj9ax6veOboIX3d8QdX4ZBhZBZCUZC7D8rhkZD"
 
     request({
         "uri": "https://graph.facebook.com/me/messages",
