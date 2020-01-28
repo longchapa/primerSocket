@@ -1,4 +1,5 @@
 function eventoFacebook(event){
+    var result = []
     event.forEach(a => {
         const senderId = a.sender.id
         const mensaje = a.message.text
@@ -6,9 +7,9 @@ function eventoFacebook(event){
             "senderId": senderId,
             "mensaje" : mensaje
         }
-        return evento
+        result.push(evento)
     })
-    
+    return result
 }
 
 function messageData(senderId){
