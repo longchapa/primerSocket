@@ -3,10 +3,6 @@ const request = require("request");
 const router = require("express").Router();
 
 /** Routes */
-router.get("/", (req, res) => {
-  res.status(200).send(`Hola mundo`);
-});
-
 // Adds support for GET requests to our webhook
 router.get("/webhook", (req, res) => {
   // Your verify token. Should be a random string.
@@ -61,13 +57,13 @@ router.post("/send-message", (req, res) => {
         access_token: process.env.PAGE_ACCESS_TOKEN
       },
       method: "POST",
-      json: response
+      json: res
     },
     function(err) {
       if (err) {
         console.log("Ha ocurrido un error");
       } else {
-        console.log(response.recipient.id);
+        console.log(res.recipient.id);
       }
     }
   );
